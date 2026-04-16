@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Kannada:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --user-font-scale: 1;
+
+    --background: 222 30% 7%;
+    --foreground: 40 20% 94%;
+
+    --card: 223 25% 11%;
+    --card-foreground: 40 20% 94%;
+
+    --popover: 223 25% 11%;
+    --popover-foreground: 40 20% 94%;
+
+    --primary: 21 78% 58%;
+    --primary-foreground: 222 30% 7%;
+
+    --secondary: 223 18% 18%;
+    --secondary-foreground: 40 20% 94%;
+
+    --muted: 223 18% 16%;
+    --muted-foreground: 40 12% 72%;
+
+    --accent: 223 18% 18%;
+    --accent-foreground: 40 20% 94%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 40 20% 94% / 0.12;
+    --input: 40 20% 94% / 0.16;
+    --ring: 21 78% 58%;
+
+    --radius: 0.75rem;
+
+    --paper: 222 30% 7%;
+    --ink: 40 20% 94%;
+    --terracotta: 21 78% 58%;
+    --terracotta-light: 21 78% 58% / 0.12;
+    --terracotta-hover: 21 78% 52%;
+
+    --shadow-book: 0 0 0 1px rgba(255,255,255,.04), 0 8px 24px rgba(0,0,0,.35), 0 20px 40px rgba(0,0,0,.22);
+    --shadow-card-hover: 0 0 0 1px rgba(255,255,255,.05), 0 10px 18px rgba(0,0,0,.35), 0 24px 42px rgba(0,0,0,.28);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  [data-theme='light'] {
+    --background: 36 33% 97%;
+    --foreground: 20 10% 10%;
+
+    --card: 36 33% 97%;
+    --card-foreground: 20 10% 10%;
+
+    --popover: 36 33% 97%;
+    --popover-foreground: 20 10% 10%;
+
+    --primary: 15 60% 45%;
+    --primary-foreground: 36 33% 97%;
+
+    --secondary: 36 15% 92%;
+    --secondary-foreground: 20 10% 10%;
+
+    --muted: 36 10% 92%;
+    --muted-foreground: 36 10% 50%;
+
+    --accent: 36 15% 92%;
+    --accent-foreground: 20 10% 10%;
+
+    --border: 20 10% 10% / 0.08;
+    --input: 20 10% 10% / 0.12;
+    --ring: 15 60% 45%;
+
+    --paper: 36 33% 97%;
+    --ink: 20 10% 10%;
+    --terracotta: 15 60% 45%;
+    --terracotta-light: 15 60% 45% / 0.1;
+    --terracotta-hover: 15 60% 40%;
+
+    --shadow-book: 0 0 0 1px rgba(0,0,0,.05), 0 2px 4px rgba(0,0,0,.05), 0 12px 24px rgba(0,0,0,.05);
+    --shadow-card-hover: 0 0 0 1px rgba(0,0,0,.05), 0 4px 8px rgba(0,0,0,.08), 0 16px 32px rgba(0,0,0,.08);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background:
+      radial-gradient(circle at top left, hsl(var(--terracotta-light)) 0%, transparent 34%),
+      radial-gradient(circle at top right, hsl(var(--muted)) 0%, transparent 26%),
+      hsl(var(--background));
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+
+  /* Kannada text styling */
+  .kannada-text {
+    font-family: 'Noto Serif Kannada', serif;
+    line-height: 1.85;
+    text-wrap: pretty;
+  }
+
+  .kannada-body {
+    font-family: 'Noto Serif Kannada', serif;
+    font-size: calc(1.22rem * var(--user-font-scale));
+    line-height: 1.95;
+    text-wrap: pretty;
+  }
+
+  /* Drop cap for story first letter */
+  .drop-cap::first-letter {
+    font-size: 3.5em;
+    float: left;
+    line-height: 0.8;
+    padding-right: 0.1em;
+    color: hsl(var(--terracotta));
+    font-family: 'Noto Serif Kannada', serif;
+    font-weight: 700;
+  }
+
+  /* Custom text selection */
+  ::selection {
+    background: hsl(var(--terracotta-light));
+  }
+}
+
+/* Reading progress bar */
+.reading-progress {
+  height: 2px;
+  background: hsl(var(--terracotta));
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transition: width 0.1s ease;
+}
+
+/* Glassmorphism header */
+.glass-header {
+  backdrop-filter: blur(12px);
+  background: hsl(var(--card) / 0.78);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.user-scale-hero-title {
+  font-size: calc(2.25rem * var(--user-font-scale));
+}
+
+@media (min-width: 640px) {
+  .user-scale-hero-title {
+    font-size: calc(3rem * var(--user-font-scale));
+  }
+}
+
+.user-scale-hero-subtitle {
+  font-size: calc(1.05rem * var(--user-font-scale));
+}
+
+@media (min-width: 640px) {
+  .user-scale-hero-subtitle {
+    font-size: calc(1.25rem * var(--user-font-scale));
+  }
+}
+
+.user-scale-section-title {
+  font-size: calc(1.5rem * var(--user-font-scale));
+}
+
+@media (min-width: 640px) {
+  .user-scale-section-title {
+    font-size: calc(1.875rem * var(--user-font-scale));
+  }
+}
+
+.user-scale-card-title {
+  font-size: calc(1.02rem * var(--user-font-scale));
+}
+
+.user-scale-card-meta {
+  font-size: calc(0.875rem * var(--user-font-scale));
+}
+
+.user-scale-reader-title {
+  font-size: calc(1.9rem * var(--user-font-scale));
+}
+
+@media (min-width: 640px) {
+  .user-scale-reader-title {
+    font-size: calc(2.35rem * var(--user-font-scale));
+  }
+}
+
+.user-scale-reader-meta {
+  font-size: calc(0.98rem * var(--user-font-scale));
+}
+
+.user-scale-chapter-title {
+  font-size: calc(1.125rem * var(--user-font-scale));
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.reading-surface p:last-child {
+  margin-bottom: 0;
+}
+
+.reader-typography {
+  max-width: 800px;
+  font-size: calc(15px * var(--user-font-scale));
+  line-height: 1.85;
+  letter-spacing: 0.3px;
+}
+
+@media (min-width: 640px) {
+  .reader-typography {
+    font-size: calc(18px * var(--user-font-scale));
+    line-height: 1.9;
+  }
+}
+
+.reader-quote {
+  border-left: 4px solid hsl(var(--terracotta));
+  padding-left: 1rem;
+  margin-left: 0.25rem;
+  color: hsl(var(--foreground) / 0.92);
+  font-style: italic;
+  background: linear-gradient(90deg, hsl(var(--terracotta-light)), transparent 45%);
+}
