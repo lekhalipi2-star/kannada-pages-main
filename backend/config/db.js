@@ -1,15 +1,16 @@
 import mysql from "mysql2";
 
 export const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "12345",
-  database: "stories_db"
+  host: mysql.railway.internal,
+  user: root,
+  password: ALaRqjEMITWtVuKQCGnHZSEVleLQEjwK,
+  database: railway,
+  port: 3306
 });
 
 db.connect((err) => {
   if (err) {
-    console.error("DB Connection Failed:", err);
+    console.error("DB Connection Failed ❌:", err);
   } else {
     console.log("MySQL Connected ✅");
   }
