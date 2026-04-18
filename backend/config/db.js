@@ -1,11 +1,11 @@
 import mysql from "mysql2";
 
 export const db = mysql.createConnection({
-  host: mysql.railway.internal,
-  user: root,
-  password: ALaRqjEMITWtVuKQCGnHZSEVleLQEjwK,
-  database: railway,
-  port: 3306
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT
 });
 
 db.connect((err) => {
