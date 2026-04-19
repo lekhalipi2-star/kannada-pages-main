@@ -21,7 +21,8 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://lekhalipi.com",
-    "https://www.lekhalipi.com"
+    "https://www.lekhalipi.com",
+    "https://kannada-pages-main.vercel.app"
   ],
   credentials: true
 }));
