@@ -154,6 +154,7 @@ export const addStory = (req, res) => {
     res.json("Story added");
   }
 );
+};
 
 export const updateStory = (req, res) => {
   const { id } = req.params;
