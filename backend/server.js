@@ -18,12 +18,19 @@ const __dirname = path.dirname(__filename);
 
 // CORS
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://lekhalipi.com",
-    "https://www.lekhalipi.com",
-    "https://kannada-pages-main.vercel.app"
-  ],
+  origin: function (origin, callback) {
+    const allowed = [
+      "http://localhost:5173",
+      "https://lekhalipi.com",
+      "https://www.lekhalipi.com",
+      "https://kannada-pages-main.vercel.app"
+    ];
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // allow temporarily (debug)
+    }
+  },
   credentials: true
 }));
 
