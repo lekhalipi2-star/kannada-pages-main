@@ -1,7 +1,6 @@
-const BASE_URL = "http://localhost:5000/api";
-const BASE_ORIGIN = "http://localhost:5000";
-const BASE_URL = "https://your-backend-url.up.railway.app/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
+export default BASE_URL;
 
 export type Chapter = {
   title: string;
@@ -116,6 +115,4 @@ export const getFeedback = async (token: string) => {
   return res.json();
 };
 
-const BASE_URL = import.meta.env.VITE_API_URL;
 
-export default BASE_URL;
