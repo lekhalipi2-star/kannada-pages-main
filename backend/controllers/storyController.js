@@ -147,8 +147,10 @@ export const addStory = (req, res) => {
     "INSERT INTO stories (title, content, category, cover_image) VALUES (?, ?, ?, ?)",
     [title, buildStoredContent(chapters), category, cover],
     (err) => {
-      if (err) return res.status(500).json(err);
-      res.json("Story added");
+     if (err) {
+  console.error("DB ERROR:", err);
+  return res.status(500).json({ error: "Database error" });
+}
     }
   );
 };
