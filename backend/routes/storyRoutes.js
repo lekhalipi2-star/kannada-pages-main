@@ -9,7 +9,7 @@ router.get("/", getStories);
 router.post("/", verifyToken, upload.single("cover"), addStory);
 router.put("/:id", verifyToken, updateStory);
 router.delete("/:id", verifyToken, deleteStory);
-router.post("/feedback", verifyToken, addFeedback);
+router.post("/feedback", addFeedback);
 router.get("/feedback", verifyToken, getFeedback);
 router.get("/:id", getStoryById);
 
