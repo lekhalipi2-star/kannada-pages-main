@@ -1,5 +1,3 @@
-// backend/server.js
-
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -17,9 +15,10 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ CORS FIX (IMPORTANT)
+// CORS
 app.use(cors({
   origin: [
+    "http://localhost:5173",
     "https://lekhalipi.com",
     "https://www.lekhalipi.com"
   ],
@@ -27,9 +26,9 @@ app.use(cors({
 }));
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
-// Static uploads
+// Static
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
@@ -41,15 +40,20 @@ app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
-// ✅ PORT FIX (CRITICAL FOR RAILWAY)
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error("Global Error:", err);
+  res.status(500).json({ error: "Something went wrong" });
+});
+
+// Start server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});
-
-// ✅ GLOBAL ERROR HANDLER
-app.use((err, req, res, next) => {
-  console.error("Global Error:", err);
-  res.status(500).json({ error: "Something went wrong" });
 });
