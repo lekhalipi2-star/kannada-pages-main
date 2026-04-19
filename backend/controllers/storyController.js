@@ -143,17 +143,17 @@ export const addStory = (req, res) => {
     return res.status(400).json({ error: "At least one chapter is required" });
   }
 
-  db.query(
-    "INSERT INTO stories (title, content, category, cover_image) VALUES (?, ?, ?, ?)",
-    [title, buildStoredContent(chapters), category, cover],
-    (err) => {
-     if (err) {
-  console.error("DB ERROR:", err);
-  return res.status(500).json({ error: "Database error" });
-}
+ db.query(
+  "INSERT INTO stories (title, content, category, cover_image) VALUES (?, ?, ?, ?)",
+  [title, buildStoredContent(chapters), category, cover],
+  (err) => {
+    if (err) {
+      console.error("DB ERROR:", err);
+      return res.status(500).json({ error: "Database error" });
     }
-  );
-};
+    res.json("Story added");
+  }
+);
 
 export const updateStory = (req, res) => {
   const { id } = req.params;
