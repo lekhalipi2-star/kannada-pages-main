@@ -1,24 +1,18 @@
 import mysql from "mysql2";
 
-console.log("ENV CHECK:", {
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT
-});
-
-export const db = mysql.createConnection({
+export const db = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
   password: process.env.MYSQLPASSWORD,
   database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT
+  port: process.env.MYSQLPORT,
+
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error("DB Connection Failed ❌:", err);
-  } else {
-    console.log("MySQL Connected ✅");
-  }
+// Optional error logging
+db.on("error", (err) => {
+  console.error("MySQL Pool Error:", err);
 });
