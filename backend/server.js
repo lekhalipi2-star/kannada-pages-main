@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 app.use(cors({
   origin: function (origin, callback) {
     const allowed = [
-     "http://localhost:5173",
+   "http://localhost:5173",
     "https://lekhalipi.com",
     "https://www.lekhalipi.com",
     "https://kannada-pages-main.vercel.app"
