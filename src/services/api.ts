@@ -16,20 +16,22 @@ export const getCoverImageUrl = (coverImage?: string | null) => {
 };
 
 export const loginAdmin = async (data: any) => {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
+  const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
+
   return res.json();
 };
 
 export const verifyAdminToken = async (token: string) => {
-  const res = await fetch(`${BASE_URL}/auth/verify`, {
+  const res = await fetch(`${BASE_URL}/api/auth/verify`, {
     headers: {
       Authorization: token,
     },
   });
+
   return res.ok;
 };
 
