@@ -13,9 +13,13 @@ const Index = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    getStories().then((data) => {
+   getStories().then((data) => {
+      console.log(data);
+
+      const storyList = Array.isArray(data) ? data : [];
+
       setStories(
-        data.map((story: any) =>
+        storyList.map((story: any) =>
           normalizeStoryRecord({
             ...story,
             cover: getCoverImageUrl(story.cover_image),
