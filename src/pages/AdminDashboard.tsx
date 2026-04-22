@@ -46,11 +46,15 @@ const AdminDashboard = () => {
     fetchFeedbacks();
   }, [navigate]);
 
-  const fetchStories = async () => {
+ const fetchStories = async () => {
     try {
       const data = await getStories();
+      console.log(data);
+
+      const storyList = Array.isArray(data) ? data : [];
+
       setStories(
-        data.map((story: any) => {
+        storyList.map((story: any) => {
           const normalized = normalizeStoryRecord(story);
 
           return {
