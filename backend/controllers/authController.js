@@ -5,6 +5,23 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "secretkey";
 const BCRYPT_HASH_PATTERN = /^\$2[aby]\$\d{2}\$/;
 
+export const createAdmin = async (req, res) => {
+  const { username, password } = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  console.log("FULL HASH:", hashedPassword);
+
+  db.query(
+    "INSERT INTO admin (username, password) VALUES (?, ?)",
+    [username, hashedPassword],
+    (err) => {
+      if (err) return res.status(500).json(err);
+      res.json("Admin created");
+    }
+  );
+};
+
 export const login = (req, res) => {
   const { username, password } = req.body;
 
