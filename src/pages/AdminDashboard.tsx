@@ -302,14 +302,22 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        <div className="grid gap-4">
-          {stories.map((story) => (
-            <div key={story.id} className="bg-card p-4 rounded-lg">
-              <h3 className="text-lg font-semibold">{story.title}</h3>
-              <p className="text-muted-foreground">{story.category}</p>
-              <p className="text-sm mt-2">{story.chapters[0]?.content.substring(0, 100)}...</p>
-              <p className="text-xs text-muted-foreground mt-1">{story.chapters.length} chapters</p>
-              <div className="flex gap-2 mt-4">
+       <div className="grid gap-4">
+  {stories.map((story) => (
+    <div key={story.id} className="bg-card p-4 rounded-lg">
+      <h3 className="text-lg font-semibold">{story.title}</h3>
+
+      <p className="text-muted-foreground">{story.category}</p>
+
+      <p className="text-sm mt-2">
+        {story.content?.substring(0, 100)}...
+      </p>
+
+      <p className="text-xs text-muted-foreground mt-1">
+        1 chapter
+      </p>
+
+      <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => navigate(`/edit/${story.id}`)}
                   className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 text-sm"
