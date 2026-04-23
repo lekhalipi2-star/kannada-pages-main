@@ -6,6 +6,7 @@ import StoryCard from '@/components/StoryCard';
 import { categories } from '@/data/stories';
 import { getCoverImageUrl, getStories } from '@/services/api';
 import { normalizeStoryRecord, type StoryRecord } from '@/lib/story';
+import { getStories } from '@/services/api';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState('ಎಲ್ಲಾ');
@@ -18,14 +19,8 @@ const Index = () => {
 
       const storyList = Array.isArray(data) ? data : [];
 
-      setStories(
-        storyList.map((story: any) =>
-          normalizeStoryRecord({
-            ...story,
-            cover: getCoverImageUrl(story.cover_image),
-          })
-        )
-      );
+      
+      setStories(storyList);
       setLoaded(true);
     }).catch(() => {
       setLoaded(true);
