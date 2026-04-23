@@ -8,6 +8,7 @@ export type StoryRecord = {
   title: string;
   author: string;
   cover: string;
+  cover_image: string;
   category: string;
   readTime: string;
   readers: string;
