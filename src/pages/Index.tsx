@@ -3,7 +3,7 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import CategoryFilter from '@/components/CategoryFilter';
 import StoryCard from '@/components/StoryCard';
-import { stories as sampleStories, categories } from '@/data/stories';
+import { categories } from '@/data/stories';
 import { getCoverImageUrl, getStories } from '@/services/api';
 import { normalizeStoryRecord, type StoryRecord } from '@/lib/story';
 
@@ -13,7 +13,7 @@ const Index = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-   getStories().then((data) => {
+    getStories().then((data) => {
       console.log(data);
 
       const storyList = Array.isArray(data) ? data : [];
@@ -28,13 +28,13 @@ const Index = () => {
       );
       setLoaded(true);
     }).catch(() => {
-      setLoaded(true); // Fallback to sample if API fails
+      setLoaded(true);
     });
   }, []);
 
-  const allStories = stories.length > 0
-    ? stories
-    : sampleStories.map((story) => normalizeStoryRecord(story));
+  console.log("FINAL STORIES:", stories);
+
+  const allStories = stories;
 
   const filtered = activeCategory === 'ಎಲ್ಲಾ'
     ? allStories
