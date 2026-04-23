@@ -310,12 +310,14 @@ const AdminDashboard = () => {
       <p className="text-muted-foreground">{story.category}</p>
 
       <p className="text-sm mt-2">
-        {story.content?.substring(0, 100)}...
-      </p>
+  {story.chapters?.[0]?.content
+    ? story.chapters[0].content.substring(0, 100)
+    : "No content"}
+</p>
 
-      <p className="text-xs text-muted-foreground mt-1">
-        1 chapter
-      </p>
+<p className="text-xs text-muted-foreground mt-1">
+  {story.chapters?.length || 0} chapters
+</p>
 
       <div className="flex gap-2 mt-4">
                 <button
