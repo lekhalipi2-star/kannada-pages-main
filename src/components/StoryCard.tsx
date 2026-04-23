@@ -20,9 +20,13 @@ const StoryCard = ({ story, index }: Props) => {
           {/* Cover */}
           <div className="aspect-[3/4] rounded-lg overflow-hidden">
             <img
-              src={story.cover}
+              src={
+                story.cover_image
+                  ? `${import.meta.env.VITE_API_URL}/uploads/${story.cover_image}`
+                  : "/placeholder.svg"
+              }
               alt={story.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-40 object-cover rounded"
               loading="lazy"
             />
           </div>
