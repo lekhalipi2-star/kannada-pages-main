@@ -39,12 +39,12 @@ export const verifyAdminToken = async (token: string) => {
 };
 
 export const getStories = async () => {
-  const res = await fetch(`${BASE_URL}/stories`);
+  const res = await fetch(`${BASE_URL}/api/stories`);
   return res.json();
 };
 
 export const getStoryById = async (id: string) => {
-  const res = await fetch(`${BASE_URL}/stories/${id}`);
+  const res = await fetch(`${BASE_URL}/api/stories/${id}`);
   if (!res.ok) {
     throw new Error(`Failed to fetch story: ${res.status}`);
   }
@@ -61,7 +61,7 @@ export const addStory = async (data: any, token: string) => {
     formData.append("cover", data.cover);
   }
 
-  const res = await fetch(`${BASE_URL}/stories`, {
+  const res = await fetch(`${BASE_URL}/api/stories`, {
     method: "POST",
     headers: {
       Authorization: token,
@@ -72,7 +72,7 @@ export const addStory = async (data: any, token: string) => {
 };
 
 export const updateStory = async (id: string, data: any, token: string) => {
-  const res = await fetch(`${BASE_URL}/stories/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/stories/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export const updateStory = async (id: string, data: any, token: string) => {
 };
 
 export const deleteStory = async (id: string, token: string) => {
-  const res = await fetch(`${BASE_URL}/stories/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/stories/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: token,
@@ -109,7 +109,7 @@ export const addFeedback = async (data: any) => {
 };
 
 export const getFeedback = async (token: string) => {
-  const res = await fetch(`${BASE_URL}/stories/feedback`, {
+  const res = await fetch(`${BASE_URL}/api/stories/feedback`, {
     headers: {
       Authorization: token,
     },
