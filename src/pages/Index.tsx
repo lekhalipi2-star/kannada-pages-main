@@ -14,20 +14,27 @@ const Index = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    getStories().then((data) => {
-      console.log(data);
+    const fetchData = async () => {
+      try {
+        const data = await getStories();
+        console.log("API DATA:", data);
 
-      const storyList = Array.isArray(data) ? data : [];
+        const storyList = Array.isArray(data) ? data : [];
 
-      
-      setStories(storyList);
-      setLoaded(true);
-    }).catch(() => {
-      setLoaded(true);
-    });
+        setStories(storyList);
+      } catch (error) {
+        console.error("Fetch failed:", error);
+      } finally {
+        setLoaded(true);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  console.log("FINAL STORIES:", stories);
+  useEffect(() => {
+    console.log("FINAL STORIES:", stories);
+  }, [stories]);
 
   const allStories = stories;
 
