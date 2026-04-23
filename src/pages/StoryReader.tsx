@@ -187,9 +187,17 @@ const StoryReader = () => {
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
             className="w-full min-w-0"
           >
-            <div className="w-full max-w-full sm:max-w-[800px] mx-auto min-w-0">
+              <div className="w-full max-w-full sm:max-w-[800px] mx-auto min-w-0">
               <div className="aspect-[16/9] rounded-2xl overflow-hidden shadow-book mb-8 border border-border/70">
-                <img src={story.cover} alt={story.title} className="w-full h-full object-cover" />
+                <img
+                  src={
+                    story.cover_image
+                      ? `${import.meta.env.VITE_API_URL}/uploads/${story.cover_image}`
+                      : "/placeholder.svg"
+                  }
+                  alt={story.title}
+                  className="w-full h-40 object-cover rounded"
+                />
               </div>
 
               <span className="text-xs font-medium uppercase tracking-wider text-terracotta">
