@@ -1,4 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_ORIGIN = BASE_URL; // ✅ ADD THIS
 
 export default BASE_URL;
 
