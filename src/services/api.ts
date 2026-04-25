@@ -20,9 +20,9 @@ export const loginAdmin = async (data: any) => {
   const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-    username: e.username,
-    password: e.password
+   body: JSON.stringify({
+  username: data.username,
+  password: data.password
 })
   });
 
