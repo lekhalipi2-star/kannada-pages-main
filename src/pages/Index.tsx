@@ -7,6 +7,7 @@ import { categories } from '@/data/stories';
 import { getCoverImageUrl, getStories } from '@/services/api';
 import { normalizeStoryRecord, type StoryRecord } from '@/lib/story';
 import { getStories } from '@/services/api';
+import { normalizeStoryRecord, type StoryRecord } from '@/lib/story';
 
 const Index = () => {
   const [activeCategory, setActiveCategory] = useState('ಎಲ್ಲಾ');
@@ -21,7 +22,8 @@ const Index = () => {
 
         const storyList = Array.isArray(data) ? data : [];
 
-        setStories(storyList);
+       const normalizedStories = storyList.map(normalizeStoryRecord);
+        setStories(normalizedStories);
       } catch (error) {
         console.error("Fetch failed:", error);
       } finally {
