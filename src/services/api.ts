@@ -19,14 +19,22 @@ export const getCoverImageUrl = (coverImage?: string | null) => {
 export const loginAdmin = async (data: any) => {
   const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-   body: JSON.stringify({
-  username: data.username,
-  password: data.password
-})
+    headers: { 
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: data.username?.trim(),
+      password: data.password?.trim(),
+    }),
   });
 
-  return res.json();
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result?.message || "Login failed");
+  }
+
+  return result;
 };
 
 export const verifyAdminToken = async (token: string) => {
