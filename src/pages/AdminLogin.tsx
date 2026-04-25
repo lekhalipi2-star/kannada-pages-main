@@ -12,23 +12,20 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      const res = await loginAdmin({ username, password });
-      if (res.token) {
-        localStorage.setItem("token", res.token);
-        navigate('/admin');
-      } else {
-        toast({ title: 'Error', description: res, variant: 'destructive' });
-      }
-    } catch (error) {
-      toast({ title: 'Error', description: 'Login failed', variant: 'destructive' });
-    }
-    setLoading(false);
-  };
+  try {
+    const res = await loginAdmin({
+      username,
+      password,
+    });
+
+    console.log("LOGIN SUCCESS:", res);
+  } catch (err: any) {
+    console.error(err.message);
+  }
+};
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
