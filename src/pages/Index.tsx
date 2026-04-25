@@ -4,8 +4,6 @@ import HeroSection from '@/components/HeroSection';
 import CategoryFilter from '@/components/CategoryFilter';
 import StoryCard from '@/components/StoryCard';
 import { categories } from '@/data/stories';
-import { getCoverImageUrl, getStories } from '@/services/api';
-import { normalizeStoryRecord, type StoryRecord } from '@/lib/story';
 import { getStories } from '@/services/api';
 import { normalizeStoryRecord, type StoryRecord } from '@/lib/story';
 
@@ -22,7 +20,10 @@ const Index = () => {
 
         const storyList = Array.isArray(data) ? data : [];
 
-       const normalizedStories = storyList.map(normalizeStoryRecord);
+        const normalizedStories = storyList.map(normalizeStoryRecord);
+
+        console.log("NORMALIZED:", normalizedStories);
+
         setStories(normalizedStories);
       } catch (error) {
         console.error("Fetch failed:", error);
@@ -38,11 +39,10 @@ const Index = () => {
     console.log("FINAL STORIES:", stories);
   }, [stories]);
 
-  const allStories = stories;
-
-  const filtered = activeCategory === 'ಎಲ್ಲಾ'
-    ? allStories
-    : allStories.filter((s) => s.category === activeCategory);
+  const filtered =
+    activeCategory === 'ಎಲ್ಲಾ'
+      ? stories
+      : stories.filter((s) => s.category === activeCategory);
 
   return (
     <div className="page-shell min-h-screen bg-background">
