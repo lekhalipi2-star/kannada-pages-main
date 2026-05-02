@@ -8,8 +8,7 @@ const ProtectedRoute = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // ✅ Fixed key from 'token' to 'adminToken'
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('token');
       if (!token) {
         setStatus('denied');
         return;
@@ -33,8 +32,7 @@ const ProtectedRoute = () => {
   }
 
   if (status === 'denied') {
-    // ✅ Fixed key here too
-    localStorage.removeItem('adminToken');
+    localStorage.removeItem('token');
     return <Navigate to="/admin-login" replace />;
   }
 
