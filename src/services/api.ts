@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://api.lekhalipi.com';
 const BASE_ORIGIN = BASE_URL;
 export default BASE_URL;
 
