@@ -1,3 +1,4 @@
+// src/components/ProtectedRoute.tsx
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { verifyAdminToken } from '@/services/api';
@@ -7,12 +8,12 @@ const ProtectedRoute = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
+      // ✅ Fixed key from 'token' to 'adminToken'
+      const token = localStorage.getItem('adminToken');
       if (!token) {
         setStatus('denied');
         return;
       }
-
       try {
         const isValid = await verifyAdminToken(token);
         setStatus(isValid ? 'allowed' : 'denied');
@@ -20,7 +21,6 @@ const ProtectedRoute = () => {
         setStatus('denied');
       }
     };
-
     checkAuth();
   }, []);
 
@@ -33,7 +33,8 @@ const ProtectedRoute = () => {
   }
 
   if (status === 'denied') {
-    localStorage.removeItem('token');
+    // ✅ Fixed key here too
+    localStorage.removeItem('adminToken');
     return <Navigate to="/admin-login" replace />;
   }
 
