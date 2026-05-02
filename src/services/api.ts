@@ -1,6 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
-const BASE_ORIGIN = BASE_URL; // ✅ ADD THIS
-
+const BASE_ORIGIN = BASE_URL;
 export default BASE_URL;
 
 export type Chapter = {
@@ -19,7 +18,7 @@ export const getCoverImageUrl = (coverImage?: string | null) => {
 export const loginAdmin = async (data: any) => {
   const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: "POST",
-    headers: { 
+    headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -31,10 +30,13 @@ export const loginAdmin = async (data: any) => {
   const result = await res.json();
 
   if (!res.ok) {
-    throw new Error(result?.message || "Login failed");
+    // ✅ Fixed - handle both string and object error responses
+    throw new Error(
+      typeof result === "string" ? result : result?.message || "Login failed"
+    );
   }
 
-  return result;
+  return result; // { token: "..." }
 };
 
 export const verifyAdminToken = async (token: string) => {
@@ -43,7 +45,6 @@ export const verifyAdminToken = async (token: string) => {
       Authorization: token,
     },
   });
-
   return res.ok;
 };
 
@@ -57,7 +58,6 @@ export const getStoryById = async (id: string) => {
   if (!res.ok) {
     throw new Error(`Failed to fetch story: ${res.status}`);
   }
-
   return res.json();
 };
 
@@ -69,7 +69,6 @@ export const addStory = async (data: any, token: string) => {
   if (data.cover) {
     formData.append("cover", data.cover);
   }
-
   const res = await fetch(`${BASE_URL}/api/stories`, {
     method: "POST",
     headers: {
@@ -128,5 +127,3 @@ export const getFeedback = async (token: string) => {
   }
   return res.json();
 };
-
-
