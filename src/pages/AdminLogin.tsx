@@ -12,20 +12,35 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await loginAdmin({ username, password });
+      console.log("LOGIN SUCCESS:", res);
 
-  try {
-    const res = await loginAdmin({
-      username,
-      password,
-    });
+      // ✅ Save token to localStorage
+      localStorage.setItem('adminToken', res.token);
 
-    console.log("LOGIN SUCCESS:", res);
-  } catch (err: any) {
-    console.error(err.message);
-  }
-};
+      toast({
+        title: "Login successful",
+        description: "Welcome back!",
+      });
+
+      // ✅ Redirect to admin dashboard
+      navigate('/admin');
+
+    } catch (err: any) {
+      console.error(err.message);
+      toast({
+        title: "Login failed",
+        description: err.message || "Wrong username or password",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
@@ -37,7 +52,6 @@ const AdminLogin = () => {
             Sign in to manage stories
           </p>
         </div>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-sm font-medium text-foreground">Username</label>
