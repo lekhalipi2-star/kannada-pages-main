@@ -1,3 +1,4 @@
+// src/pages/Index.tsx
 import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
@@ -17,13 +18,9 @@ const Index = () => {
       try {
         const data = await getStories();
         console.log("API DATA:", data);
-
         const storyList = Array.isArray(data) ? data : [];
-
         const normalizedStories = storyList.map(normalizeStoryRecord);
-
         console.log("NORMALIZED:", normalizedStories);
-
         setStories(normalizedStories);
       } catch (error) {
         console.error("Fetch failed:", error);
@@ -31,7 +28,6 @@ const Index = () => {
         setLoaded(true);
       }
     };
-
     fetchData();
   }, []);
 
@@ -49,26 +45,22 @@ const Index = () => {
       <Header />
       <main className="relative z-10 container mx-auto max-w-6xl">
         <HeroSection />
-
         <section className="px-4 sm:px-6 pb-20">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-kannada user-scale-section-title font-semibold text-foreground">
               ಜನಪ್ರಿಯ ಕಥೆಗಳು
             </h2>
           </div>
-
           <CategoryFilter
             categories={categories}
             active={activeCategory}
             onSelect={setActiveCategory}
           />
-
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-6">
             {filtered.map((story, i) => (
               <StoryCard key={story.id} story={story} index={i} />
             ))}
           </div>
-
           {filtered.length === 0 && loaded && (
             <div className="text-center py-16">
               <p className="font-kannada text-muted-foreground text-lg">
