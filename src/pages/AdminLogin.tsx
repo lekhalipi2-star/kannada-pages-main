@@ -1,3 +1,4 @@
+// src/pages/AdminLogin.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Eye, EyeOff } from 'lucide-react';
