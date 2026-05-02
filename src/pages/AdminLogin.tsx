@@ -20,8 +20,8 @@ const AdminLogin = () => {
       const res = await loginAdmin({ username, password });
       console.log("LOGIN SUCCESS:", res);
 
-      // ✅ Save token to localStorage
-      localStorage.setItem('adminToken', res.token);
+      // ✅ Use 'token' to match ProtectedRoute key
+      localStorage.setItem('token', res.token);
 
       toast({
         title: "Login successful",
