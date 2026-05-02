@@ -1,7 +1,9 @@
+// src/components/StoryCard.tsx
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users } from 'lucide-react';
 import type { StoryRecord } from '@/lib/story';
+import { getCoverImageUrl } from '@/services/api';
 
 type Props = {
   story: StoryRecord;
@@ -9,24 +11,23 @@ type Props = {
 };
 
 const StoryCard = ({ story, index }: Props) => {
-    console.log("CARD STORY:", story);
+  console.log("CARD STORY:", story);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.08, ease: [0.4, 0, 0.2, 1] }}
     >
-       <Link to={`/story/${story.id}`} className="group block">
+      <Link to={`/story/${story.id}`} className="group block">
         <div className="p-1 rounded-xl shadow-book hover:shadow-card-hover transition-all duration-300 bg-card/90 group-hover:-translate-y-1 border border-border/70 backdrop-blur-md">
           {/* Cover */}
           <div className="aspect-[3/4] rounded-lg overflow-hidden">
             <img
-              src={story.cover || "/placeholder.svg"}
+              src={getCoverImageUrl(story.cover)}
               alt={story.title}
               className="w-full h-40 object-cover rounded"
             />
           </div>
-
           {/* Info */}
           <div className="p-3 pt-2.5">
             <span className="text-[10px] font-medium uppercase tracking-wider text-terracotta">
