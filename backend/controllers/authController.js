@@ -1,3 +1,5 @@
+// backend/controllers/authController.js
+
 import { db } from "../config/db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -17,7 +19,6 @@ export const createAdmin = async (req, res) => {
 
     // 🔐 Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-
     console.log("✅ FULL HASH GENERATED:", hashedPassword);
 
     db.query(
@@ -42,26 +43,30 @@ export const createAdmin = async (req, res) => {
 export const login = (req, res) => {
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    return res.status(400).json("Username & password required");
+  }
+
   db.query(
     "SELECT * FROM admin WHERE username = ?",
     [username],
     async (err, result) => {
       if (err) return res.status(500).json(err);
+
       if (result.length === 0)
         return res.status(404).json("User not found");
 
       const admin = result[0];
-
       console.log("👉 STORED PASSWORD:", admin.password);
 
-      // 🔐 Always use bcrypt compare
+      // 🔐 Fixed bcrypt.compare
       const isMatch = await bcrypt.compare(password, admin.password);
-
       console.log("👉 MATCH RESULT:", isMatch);
 
       if (!isMatch)
         return res.status(400).json("Wrong username or password");
 
+      // ✅ Fixed admin.id
       const token = jwt.sign({ id: admin.id }, JWT_SECRET, {
         expiresIn: "12h",
       });
