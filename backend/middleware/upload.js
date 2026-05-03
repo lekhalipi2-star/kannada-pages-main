@@ -1,21 +1,11 @@
 import multer from "multer";
 
-// Store file in memory as a buffer — we convert to Base64 in the controller
+// Keep multer for any legacy use, but image handling is now done frontend-side as Base64
 const storage = multer.memoryStorage();
 
-export const upload = multer({
-  storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB max
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Only image files are allowed"), false);
-    }
-  },
-});
+export const upload = multer({ storage });
 
-// Convert multer buffer → data URI string (stored directly in DB)
+// No longer used - kept for reference only
 export const bufferToDataUri = (file) => {
   if (!file) return null;
   const base64 = file.buffer.toString("base64");
