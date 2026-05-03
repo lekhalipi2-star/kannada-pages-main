@@ -1,4 +1,5 @@
 import { db } from "../config/db.js";
+import { bufferToDataUri } from "../middleware/upload.js";
 
 const DEFAULT_CHAPTER_TITLE = "ಅಧ್ಯಾಯ";
 
@@ -133,7 +134,7 @@ export const getStoryById = (req, res) => {
 
 export const addStory = (req, res) => {
   const { title, category, chapters } = getStoryPayload(req.body);
-  const cover = req.file ? req.file.filename : null;
+  const coverUrl = bufferToDataUri(req.file); // data:image/...;base64,... or null
 
   if (!title || !category) {
     return res.status(400).json({ error: "Title and category are required" });
@@ -143,17 +144,17 @@ export const addStory = (req, res) => {
     return res.status(400).json({ error: "At least one chapter is required" });
   }
 
- db.query(
-  "INSERT INTO stories (title, content, category, cover_image) VALUES (?, ?, ?, ?)",
-  [title, buildStoredContent(chapters), category, cover],
-  (err) => {
-    if (err) {
-      console.error("DB ERROR:", err);
-      return res.status(500).json({ error: "Database error" });
+  db.query(
+    "INSERT INTO stories (title, content, category, cover_image) VALUES (?, ?, ?, ?)",
+    [title, buildStoredContent(chapters), category, coverUrl],
+    (err) => {
+      if (err) {
+        console.error("DB ERROR:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+      res.json("Story added");
     }
-    res.json("Story added");
-  }
-);
+  );
 };
 
 export const updateStory = (req, res) => {
