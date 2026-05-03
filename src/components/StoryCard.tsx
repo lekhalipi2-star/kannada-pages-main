@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users } from 'lucide-react';
 import type { StoryRecord } from '@/lib/story';
-import { getCoverImageUrl } from '@/services/api';
-
 type Props = {
   story: StoryRecord;
   index: number;
@@ -23,7 +21,7 @@ const StoryCard = ({ story, index }: Props) => {
           {/* Cover */}
           <div className="aspect-[3/4] rounded-lg overflow-hidden">
             <img
-              src={getCoverImageUrl(story.cover)}
+              src={story.cover}
               alt={story.title}
               className="w-full h-40 object-cover rounded"
             />
