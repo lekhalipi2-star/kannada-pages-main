@@ -113,6 +113,17 @@ export const parseStoryChapters = (source: unknown, allowPlaceholder = true): Ch
   return [{ title: `${DEFAULT_CHAPTER_TITLE} 1`, content: DEFAULT_PLACEHOLDER }];
 };
 
+const API_BASE = import.meta.env.VITE_API_URL || 'https://api.lekhalipi.com';
+
+const resolveCoverUrl = (story: any): string => {
+  const raw = cleanText(story?.cover) || cleanText(story?.cover_image);
+  if (!raw) return '/placeholder.svg';
+  // Already a full URL or absolute path — use as-is
+  if (/^https?:\/\//i.test(raw) || raw.startsWith('/') || /^data:image\//i.test(raw)) return raw;
+  // Bare filename — build full URL pointing to Railway uploads
+  return `${API_BASE}/uploads/${raw}`;
+};
+
 export const normalizeStoryRecord = (story: any): StoryRecord => {
   const chapters = parseStoryChapters(story?.chapters ?? story?.content);
 
@@ -120,7 +131,7 @@ export const normalizeStoryRecord = (story: any): StoryRecord => {
     id: story?.id?.toString?.() ?? '',
     title: cleanText(story?.title),
     author: cleanText(story?.author) || 'Admin',
-    cover: cleanText(story?.cover) || cleanText(story?.cover_image) || '/placeholder.svg',
+    cover: resolveCoverUrl(story),
     category: cleanText(story?.category),
     readTime:
       cleanText(story?.readTime) || `${Math.max(1, Math.ceil(getWordCount(chapters) / 180))} ನಿಮಿಷ`,
