@@ -1,32 +1,23 @@
 import multer from "multer";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Store file in memory as a buffer — we convert to Base64 in the controller
+const storage = multer.memoryStorage();
 
-const uploadDir = path.join(__dirname, "..", "uploads");
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-  console.log("Uploads folder created at:", uploadDir);
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+export const upload = multer({
+  storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB max
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed"), false);
     }
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    // ✅ Fixed Date.now + sanitize filename (remove spaces & special chars)
-    const sanitized = file.originalname
-      .replace(/\s+/g, '_')
-      .replace(/[^a-zA-Z0-9._-]/g, '_');
-    cb(null, Date.now() + "-" + sanitized);
   },
 });
 
-export const upload = multer({ storage });
+// Convert multer buffer → data URI string (stored directly in DB)
+export const bufferToDataUri = (file) => {
+  if (!file) return null;
+  const base64 = file.buffer.toString("base64");
+  return `data:${file.mimetype};base64,${base64}`;
+};
