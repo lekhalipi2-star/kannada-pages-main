@@ -15,6 +15,17 @@ export const getCoverImageUrl = (coverImage?: string | null) => {
   return `${BASE_ORIGIN}/uploads/${coverImage}`;
 };
 
+// Convert a File object to a Base64 data URI string
+export const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+
 export const loginAdmin = async (data: any) => {
   const res = await fetch(`${BASE_URL}/api/auth/login`, {
     method: "POST",
@@ -62,26 +73,13 @@ export const getStoryById = async (id: string) => {
 };
 
 export const addStory = async (data: any, token: string) => {
-  const formData = new FormData();
-  formData.append("title", data.title);
-  formData.append("category", data.category);
-  formData.append("chapters", JSON.stringify(data.chapters ?? []));
-  if (data.cover) {
-    formData.append("cover", data.cover);
+  let cover_image: string | null = null;
+  if (data.cover instanceof File) {
+    cover_image = await fileToBase64(data.cover);
   }
+
   const res = await fetch(`${BASE_URL}/api/stories`, {
     method: "POST",
-    headers: {
-      Authorization: token,
-    },
-    body: formData,
-  });
-  return res.json();
-};
-
-export const updateStory = async (id: string, data: any, token: string) => {
-  const res = await fetch(`${BASE_URL}/api/stories/${id}`, {
-    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: token,
@@ -90,7 +88,34 @@ export const updateStory = async (id: string, data: any, token: string) => {
       title: data.title,
       category: data.category,
       chapters: data.chapters ?? [],
+      cover_image,
     }),
+  });
+  return res.json();
+};
+
+export const updateStory = async (id: string, data: any, token: string) => {
+  let cover_image: string | undefined = undefined;
+  if (data.cover instanceof File) {
+    cover_image = await fileToBase64(data.cover);
+  }
+
+  const body: any = {
+    title: data.title,
+    category: data.category,
+    chapters: data.chapters ?? [],
+  };
+  if (cover_image) {
+    body.cover_image = cover_image;
+  }
+
+  const res = await fetch(`${BASE_URL}/api/stories/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(body),
   });
   return res.json();
 };
