@@ -106,7 +106,7 @@ export const deleteStory = async (id: string, token: string) => {
 };
 
 export const addFeedback = async (data: any) => {
-  const res = await fetch(`${BASE_URL}/stories/feedback`, {
+  const res = await fetch(`${BASE_URL}/api/stories/feedback`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
