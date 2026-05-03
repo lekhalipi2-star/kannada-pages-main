@@ -133,20 +133,21 @@ export const getStoryById = (req, res) => {
 };
 
 export const addStory = (req, res) => {
-  const { title, category, chapters } = getStoryPayload(req.body);
-  const coverUrl = bufferToDataUri(req.file); // data:image/...;base64,... or null
+  const { title, category, chapters, cover_image } = req.body;
+  const parsedChapters = parseStoryChapters(chapters ?? null);
+  const coverUrl = cover_image || null; // Base64 data URI from frontend, or null
 
-  if (!title || !category) {
+  if (!cleanText(title) || !cleanText(category)) {
     return res.status(400).json({ error: "Title and category are required" });
   }
 
-  if (!chapters.length) {
+  if (!parsedChapters.length) {
     return res.status(400).json({ error: "At least one chapter is required" });
   }
 
   db.query(
     "INSERT INTO stories (title, content, category, cover_image) VALUES (?, ?, ?, ?)",
-    [title, buildStoredContent(chapters), category, coverUrl],
+    [cleanText(title), buildStoredContent(parsedChapters), cleanText(category), coverUrl],
     (err) => {
       if (err) {
         console.error("DB ERROR:", err);
@@ -159,24 +160,37 @@ export const addStory = (req, res) => {
 
 export const updateStory = (req, res) => {
   const { id } = req.params;
-  const { title, category, chapters } = getStoryPayload(req.body);
+  const { title, category, chapters, cover_image } = req.body;
+  const parsedChapters = parseStoryChapters(chapters ?? null);
+  const newCover = cover_image || null; // Base64 data URI from frontend, or null
 
-  if (!title || !category) {
+  if (!cleanText(title) || !cleanText(category)) {
     return res.status(400).json({ error: "Title and category are required" });
   }
 
-  if (!chapters.length) {
+  if (!parsedChapters.length) {
     return res.status(400).json({ error: "At least one chapter is required" });
   }
 
-  db.query(
-    "UPDATE stories SET title=?, content=?, category=? WHERE id=?",
-    [title, buildStoredContent(chapters), category, id],
-    (err) => {
-      if (err) return res.status(500).json(err);
-      res.json("Story updated");
-    }
-  );
+  if (newCover) {
+    db.query(
+      "UPDATE stories SET title=?, content=?, category=?, cover_image=? WHERE id=?",
+      [cleanText(title), buildStoredContent(parsedChapters), cleanText(category), newCover, id],
+      (err) => {
+        if (err) return res.status(500).json(err);
+        res.json("Story updated");
+      }
+    );
+  } else {
+    db.query(
+      "UPDATE stories SET title=?, content=?, category=? WHERE id=?",
+      [cleanText(title), buildStoredContent(parsedChapters), cleanText(category), id],
+      (err) => {
+        if (err) return res.status(500).json(err);
+        res.json("Story updated");
+      }
+    );
+  }
 };
 
 export const deleteStory = (req, res) => {
