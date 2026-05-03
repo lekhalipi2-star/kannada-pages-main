@@ -33,8 +33,12 @@ app.use(cors({
 
 app.use(express.json({ limit: "10mb" }));
 
-// ✅ Serve uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// ✅ Serve uploaded files with CORS headers so browsers can load images cross-origin
+app.use("/uploads", (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+}, express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/stories", storyRoutes);
