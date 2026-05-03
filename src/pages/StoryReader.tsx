@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight, Clock, Users, Star } from 'lucide-react';
 import { stories as sampleStories } from '@/data/stories';
-import { addFeedback, getCoverImageUrl, getStoryById } from '@/services/api';
+import { addFeedback, getStoryById } from '@/services/api';
 import { normalizeStoryRecord, type StoryRecord } from '@/lib/story';
 import UserDisplayControls from '@/components/UserDisplayControls';
 
@@ -32,7 +32,6 @@ const StoryReader = () => {
         setStory(
           normalizeStoryRecord({
             ...data,
-            cover: getCoverImageUrl(data.cover_image),
             author: 'Admin',
           })
         );
@@ -190,11 +189,7 @@ const StoryReader = () => {
               <div className="w-full max-w-full sm:max-w-[800px] mx-auto min-w-0">
               <div className="aspect-[16/9] rounded-2xl overflow-hidden shadow-book mb-8 border border-border/70">
                 <img
-                  src={
-                    story.cover_image
-                      ? `${import.meta.env.VITE_API_URL}/uploads/${story.cover_image}`
-                      : "/placeholder.svg"
-                  }
+                  src={story.cover}
                   alt={story.title}
                   className="w-full h-40 object-cover rounded"
                 />
