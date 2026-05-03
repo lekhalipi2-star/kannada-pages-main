@@ -133,7 +133,7 @@ export const getStoryById = (req, res) => {
 
 export const addStory = (req, res) => {
   const { title, category, chapters } = getStoryPayload(req.body);
-  const cover = req.file ? req.file.path : null;
+  const cover = req.file ? req.file.filename : null;
 
   if (!title || !category) {
     return res.status(400).json({ error: "Title and category are required" });
@@ -215,5 +215,3 @@ export const getFeedback = (req, res) => {
     }
   );
 };
-
-
